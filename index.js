@@ -16,7 +16,7 @@ module.exports = function (aws, options) {
   var regexGzip = /\.([a-z]{2,})\.gz$/i;
   var regexGeneral = /\.([a-z]{2,})$/i;
 
-  return es.mapSync(function (file) {
+  return es.map(function (file) {
 
       // Verify this is a file
       if (!file.isBuffer()) { return file; }
@@ -52,9 +52,11 @@ module.exports = function (aws, options) {
       client.putBuffer(file.contents, uploadPath, headers, function(err, res) {
         if (err || res.statusCode !== 200) {
           gutil.log(gutil.colors.red('[FAILED]', file.path + " -> " + uploadPath));
+          cb(err);
         } else {
           gutil.log(gutil.colors.green('[SUCCESS]', file.path + " -> " + uploadPath));
           res.resume();
+          cb(null);
         }
       });
 
