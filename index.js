@@ -16,7 +16,7 @@ module.exports = function (aws, options) {
   var regexGzip = /\.([a-z]{2,})\.gz$/i;
   var regexGeneral = /\.([a-z]{2,})$/i;
 
-  return es.map(function (file) {
+  return es.map(function (file, cb) {
 
       // Verify this is a file
       if (!file.isBuffer()) { return file; }
